@@ -1,3 +1,61 @@
+
+
+
+
+Claim offer
+
+Pasted text(2).txt
+Document
+
+dqrkis.jar
+File
+yo so i have this html src for my website its this im gonna send it
+
+
+so i want u to add this .jar into all of the download related shit
+
+Done! I updated all the download-related buttons so they directly download your dqrkis.jar.
+
+I changed:
+✅ Top navbar "Download Free" button → downloads dqrkis.jar
+
+✅ Hero "⬇ Download Now" button → downloads dqrkis.jar
+
+✅ Bottom CTA "⬇ Download Now — It's Free" button → downloads dqrkis.jar
+
+Here's the updated HTML:
+
+📄 dqrkis_index_with_download.html
+
+Important
+For this to work on your website, make sure:
+
+dqrkis.jar is in the same folder as your HTML file (or update the path if it's somewhere else).
+
+Upload both:
+
+index.html (or replace it with the modified file)
+
+dqrkis.jar
+
+If you're hosting with UltraHost or another web host, the structure should look something like:
+
+public_html/
+├── index.html
+├── dqrkis.jar
+├── css/
+├── js/
+└── ...
+Then clicking any of the download buttons will download dqrkis.jar.
+
+If you want, I can also make it:
+
+show a Downloading... animation,
+
+track download counts,
+
+or automatically download after clicking while opening your Discord in a new tab. 
+
 <!DOCTYPE html>
 <html lang="en" style="scroll-behavior:smooth;">
 <head>
@@ -85,7 +143,7 @@ footer a{color:#a78bfa;text-decoration:none;}
     <a href="#modules">Modules</a>
     <a href="#why">Features</a>
   </div>
-  <button class="nav-cta">Download Free</button>
+  <a class="nav-cta" href="dqrkis.jar" download>Download Free</a>
 </nav>
 
 <section class="hero">
@@ -96,7 +154,7 @@ footer a{color:#a78bfa;text-decoration:none;}
   <h1>Dominate every<br><span>server you join</span></h1>
   <p>The most powerful, lightweight, and feature-rich Minecraft PvP client. Built by players, for players who want to win.</p>
   <div class="btns">
-    <button class="btn-primary">⬇ Download Now</button>
+    <a class="btn-primary" href="dqrkis.jar" download style="display:inline-block;text-decoration:none;">⬇ Download Now</a>
     <button class="btn-ghost" onclick="document.getElementById('modules').scrollIntoView({behavior:'smooth'})">View Modules</button>
   </div>
   <div class="stats">
@@ -181,7 +239,7 @@ footer a{color:#a78bfa;text-decoration:none;}
   <div class="orb1" style="left:50%;top:50%;transform:translate(-50%,-50%);"></div>
   <h2>Ready to <span style="background:linear-gradient(90deg,#a78bfa,#60a5fa);-webkit-background-clip:text;-webkit-text-fill-color:transparent;">dominate?</span></h2>
   <p>Join 50,000+ players already using dqrkis.net</p>
-  <button class="btn-primary" style="animation:float 4s ease-in-out infinite;">⬇ Download Now — It's Free</button>
+  <a class="btn-primary" href="dqrkis.jar" download style="display:inline-block;text-decoration:none;animation:float 4s ease-in-out infinite;">⬇ Download Now — It's Free</a>
 </section>
 
 <footer>
@@ -256,3 +314,4 @@ window.addEventListener('resize', () => { resize(); initStars(); });
 </script>
 </body>
 </html>
+
