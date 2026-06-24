@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>dqrkis.net</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Segoe UI',sans-serif;background:#0a0a1a;color:#fff;min-height:100vh;}
+@keyframes fadeUp{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:translateY(0)}}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+@keyframes pulse{0%,100%{opacity:.15;transform:scale(1)}50%{opacity:.25;transform:scale(1.08)}}
+@keyframes shimmer{0%{background-position:-200% center}100%{background-position:200% center}}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
+nav{display:flex;align-items:center;justify-content:space-between;padding:18px 40px;background:rgba(255,255,255,.03);border-bottom:.5px solid rgba(255,255,255,.08);animation:fadeIn .5s ease both;}
+.nav-logo{font-size:18px;font-weight:700;color:#a78bfa;letter-spacing:.02em;}
+.nav-links{display:flex;gap:28px;}
+.nav-links a{font-size:13px;color:rgba(255,255,255,.5);text-decoration:none;transition:color .2s;}
+.nav-links a:hover{color:#a78bfa;}
+.nav-cta{background:rgba(120,80,255,.2);color:#c4b0ff;border:.5px solid rgba(150,110,255,.35);border-radius:6px;padding:8px 18px;font-size:13px;cursor:pointer;transition:background .2s,transform .15s;}
+.nav-cta:hover{background:rgba(120,80,255,.35);transform:scale(1.04);}
+.hero{position:relative;overflow:hidden;text-align:center;padding:100px 40px 80px;}
+.orb1{position:absolute;width:500px;height:500px;background:radial-gradient(circle,rgba(120,80,255,.2) 0%,transparent 70%);top:-150px;left:-150px;pointer-events:none;animation:pulse 6s ease-in-out infinite;}
+.orb2{position:absolute;width:400px;height:400px;background:radial-gradient(circle,rgba(60,120,255,.15) 0%,transparent 70%);bottom:-100px;right:-100px;pointer-events:none;animation:pulse 8s ease-in-out infinite reverse;}
+.badge{display:inline-block;background:rgba(120,80,255,.25);color:#b9a0ff;border:.5px solid rgba(150,110,255,.4);border-radius:99px;font-size:12px;padding:5px 16px;margin-bottom:22px;letter-spacing:.06em;text-transform:uppercase;animation:fadeIn .6s ease both;}
+.hero h1{font-size:52px;font-weight:800;color:#fff;margin-bottom:16px;line-height:1.15;animation:fadeUp .7s .1s ease both;}
+.hero h1 span{background:linear-gradient(90deg,#a78bfa,#60a5fa,#a78bfa);background-size:200% auto;-webkit-background-clip:text;-webkit-text-fill-color:transparent;animation:shimmer 3s linear infinite;}
+.hero p{font-size:17px;color:rgba(255,255,255,.5);max-width:500px;margin:0 auto 36px;line-height:1.7;animation:fadeUp .7s .2s ease both;}
+.btns{animation:fadeUp .7s .3s ease both;}
+.btn-primary{background:linear-gradient(135deg,#7c3aed,#3b82f6);color:#fff;border:none;border-radius:8px;padding:14px 32px;font-size:16px;font-weight:600;cursor:pointer;margin-right:12px;transition:opacity .2s,transform .15s;animation:float 4s ease-in-out infinite;}
+.btn-primary:hover{opacity:.88;transform:scale(1.04);}
+.btn-ghost{background:rgba(255,255,255,.06);color:rgba(255,255,255,.7);border:.5px solid rgba(255,255,255,.2);border-radius:8px;padding:14px 32px;font-size:16px;font-weight:500;cursor:pointer;transition:background .2s,transform .15s;}
+.btn-ghost:hover{background:rgba(255,255,255,.12);transform:scale(1.03);}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;max-width:700px;margin:60px auto 0;}
+.stat-card{background:rgba(255,255,255,.04);border:.5px solid rgba(255,255,255,.1);border-radius:14px;padding:24px;text-align:center;animation:fadeUp .7s ease both;transition:transform .2s,border-color .2s;}
+.stat-card:hover{transform:translateY(-5px);border-color:rgba(167,139,250,.4);}
+.stat-card:nth-child(1){animation-delay:.35s}.stat-card:nth-child(2){animation-delay:.45s}.stat-card:nth-child(3){animation-delay:.55s}
+.stat-card .num{font-size:28px;font-weight:700;color:#a78bfa;}
+.stat-card .label{font-size:12px;color:rgba(255,255,255,.35);margin-top:5px;text-transform:uppercase;letter-spacing:.06em;}
+.features-section{padding:60px 40px;max-width:1000px;margin:0 auto;}
+.features-section h2{text-align:center;font-size:28px;font-weight:700;margin-bottom:10px;color:#fff;}
+.features-section p.sub{text-align:center;color:rgba(255,255,255,.4);font-size:15px;margin-bottom:36px;}
+.features{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;}
+.feat-card{background:rgba(255,255,255,.03);border:.5px solid rgba(120,80,255,.2);border-radius:14px;padding:22px;animation:fadeUp .7s ease both;transition:transform .2s,border-color .2s,background .2s;}
+.feat-card:hover{transform:translateY(-6px);border-color:rgba(167,139,250,.5);background:rgba(120,80,255,.07);}
+.feat-card:nth-child(1){animation-delay:.5s}.feat-card:nth-child(2){animation-delay:.6s}.feat-card:nth-child(3){animation-delay:.7s}
+.feat-icon{width:40px;height:40px;background:rgba(120,80,255,.15);border-radius:10px;display:flex;align-items:center;justify-content:center;margin-bottom:14px;font-size:20px;transition:background .2s,transform .2s;}
+.feat-card:hover .feat-icon{background:rgba(120,80,255,.3);transform:rotate(-6deg) scale(1.1);}
+.feat-card h3{font-size:15px;font-weight:600;color:#e2d9ff;margin-bottom:8px;}
+.feat-card p{font-size:13px;color:rgba(255,255,255,.35);line-height:1.6;}
+footer{text-align:center;padding:30px;color:rgba(255,255,255,.2);font-size:13px;border-top:.5px solid rgba(255,255,255,.06);}
+footer a{color:#a78bfa;text-decoration:none;}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-logo">dqrkis.net</div>
+  <div class="nav-links">
+    <a href="#">Features</a>
+    <a href="#">Pricing</a>
+    <a href="#">Discord</a>
+  </div>
+  <button class="nav-cta">Get Started</button>
+</nav>
+
+<section class="hero">
+  <div class="orb1"></div>
+  <div class="orb2"></div>
+  <div class="badge">✦ Now Available</div>
+  <h1>Level up your<br><span>game today</span></h1>
+  <p>Powerful, lightweight, and built for players who want a real edge over the competition.</p>
+  <div class="btns">
+    <button class="btn-primary">⬇ Download Now</button>
+    <button class="btn-ghost">View Features</button>
+  </div>
+  <div class="stats">
+    <div class="stat-card"><div class="num">12k+</div><div class="label">Active Users</div></div>
+    <div class="stat-card"><div class="num">99.9%</div><div class="label">Uptime</div></div>
+    <div class="stat-card"><div class="num">24/7</div><div class="label">Support</div></div>
+  </div>
+</section>
+
+<section class="features-section">
+  <h2>Why choose us?</h2>
+  <p class="sub">Everything you need, nothing you don't.</p>
+  <div class="features">
+    <div class="feat-card">
+      <div class="feat-icon">🛡️</div>
+      <h3>Feature One</h3>
+      <p>Describe what makes this feature great for your users right here.</p>
+    </div>
+    <div class="feat-card">
+      <div class="feat-icon">⚡</div>
+      <h3>Feature Two</h3>
+      <p>Describe what makes this feature great for your users right here.</p>
+    </div>
+    <div class="feat-card">
+      <div class="feat-icon">⚙️</div>
+      <h3>Feature Three</h3>
+      <p>Describe what makes this feature great for your users right here.</p>
+    </div>
+  </div>
+</section>
+
+<footer>
+  &copy; 2026 <a href="#">dqrkis.net</a> — All rights reserved.
+</footer>
+
+</body>
+</html>
