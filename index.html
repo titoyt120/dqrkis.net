@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en" style="scroll-behavior:smooth;">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>dqrkis.net — #1 PvP Client</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Segoe UI',sans-serif;background:#04040f;color:#cdd9ff;min-height:100vh;overflow-x:hidden;font-weight:300;}
+
+canvas#stars{position:fixed;top:0;left:0;width:100%;height:100%;z-index:0;pointer-events:none;}
+
+@keyframes fadeUp{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:translateY(0)}}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+@keyframes pulse{0%,100%{opacity:.1;transform:scale(1)}50%{opacity:.18;transform:scale(1.08)}}
+@keyframes shimmer{0%{background-position:-200% center}100%{background-position:200% center}}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-7px)}}
+
+.wrap{position:relative;z-index:1;}
+
+nav{display:flex;align-items:center;justify-content:space-between;padding:18px 48px;background:rgba(10,5,30,.7);border-bottom:.5px solid rgba(100,60,255,.15);backdrop-filter:blur(10px);animation:fadeIn .5s ease both;position:sticky;top:0;z-index:100;}
+@keyframes logoShine{0%{background-position:-200% center}100%{background-position:200% center}}
+.nav-logo{font-size:20px;font-weight:500;letter-spacing:.03em;background:linear-gradient(90deg,#7c3aed,#a78bfa,#60a5fa,#a78bfa,#7c3aed);background-size:200% auto;-webkit-background-clip:text;-webkit-text-fill-color:transparent;animation:logoShine 3s linear infinite;filter:drop-shadow(0 0 8px rgba(167,139,250,.5));}
+.nav-links{display:flex;gap:30px;}
+.nav-links a{font-size:13px;color:rgba(255,255,255,.45);text-decoration:none;transition:color .2s;}
+.nav-links a:hover{color:#a78bfa;}
+.nav-cta{background:rgba(100,60,255,.25);color:#c4b0ff;border:.5px solid rgba(140,100,255,.4);border-radius:6px;padding:8px 20px;font-size:13px;cursor:pointer;transition:background .2s,transform .15s;}
+.nav-cta:hover{background:rgba(100,60,255,.4);transform:scale(1.04);}
+
+.hero{position:relative;text-align:center;padding:110px 40px 90px;overflow:hidden;}
+.orb1{position:absolute;width:600px;height:600px;background:radial-gradient(circle,rgba(100,50,255,.14) 0%,transparent 70%);top:-200px;left:-200px;pointer-events:none;animation:pulse 7s ease-in-out infinite;}
+.orb2{position:absolute;width:500px;height:500px;background:radial-gradient(circle,rgba(40,100,255,.1) 0%,transparent 70%);bottom:-150px;right:-150px;pointer-events:none;animation:pulse 9s ease-in-out infinite reverse;}
+.badge{display:inline-block;background:rgba(100,60,255,.2);color:#b9a0ff;border:.5px solid rgba(140,100,255,.35);border-radius:99px;font-size:11px;padding:5px 16px;margin-bottom:22px;letter-spacing:.08em;text-transform:uppercase;animation:fadeIn .6s ease both;}
+.hero h1{font-size:58px;font-weight:600;color:#fff;margin-bottom:16px;line-height:1.1;animation:fadeUp .7s .1s ease both;}
+.hero h1 span{background:linear-gradient(90deg,#a78bfa,#60a5fa,#a78bfa);background-size:200% auto;-webkit-background-clip:text;-webkit-text-fill-color:transparent;animation:shimmer 3s linear infinite;}
+.hero p{font-size:17px;color:rgba(255,255,255,.42);max-width:520px;margin:0 auto 38px;line-height:1.7;animation:fadeUp .7s .2s ease both;}
+.btns{animation:fadeUp .7s .3s ease both;display:flex;justify-content:center;gap:12px;}
+.btn-primary{background:linear-gradient(135deg,#6d28d9,#2563eb);color:#fff;border:none;border-radius:8px;padding:15px 36px;font-size:16px;font-weight:400;cursor:pointer;transition:opacity .2s,transform .15s;animation:float 4s ease-in-out infinite;}
+.btn-primary:hover{opacity:.85;transform:scale(1.04);}
+.btn-ghost{background:rgba(255,255,255,.05);color:rgba(255,255,255,.65);border:.5px solid rgba(255,255,255,.15);border-radius:8px;padding:15px 36px;font-size:16px;font-weight:500;cursor:pointer;transition:background .2s,transform .15s;}
+.btn-ghost:hover{background:rgba(255,255,255,.1);transform:scale(1.03);}
+
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;max-width:800px;margin:64px auto 0;}
+.stat-card{background:rgba(255,255,255,.03);border:.5px solid rgba(100,60,255,.2);border-radius:14px;padding:22px;text-align:center;animation:fadeUp .7s ease both;transition:transform .2s,border-color .2s;}
+.stat-card:hover{transform:translateY(-5px);border-color:rgba(167,139,250,.5);}
+.stat-card:nth-child(1){animation-delay:.3s}.stat-card:nth-child(2){animation-delay:.4s}.stat-card:nth-child(3){animation-delay:.5s}.stat-card:nth-child(4){animation-delay:.6s}
+.stat-card .num{font-size:26px;font-weight:500;color:#a78bfa;}
+.stat-card .label{font-size:11px;color:rgba(255,255,255,.3);margin-top:5px;text-transform:uppercase;letter-spacing:.07em;}
+
+.section{padding:70px 48px;max-width:1100px;margin:0 auto;}
+.section-title{text-align:center;font-size:30px;font-weight:500;margin-bottom:10px;}
+.section-sub{text-align:center;color:rgba(255,255,255,.35);font-size:15px;margin-bottom:44px;}
+
+.modules-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(290px,1fr));gap:14px;}
+.module-card{background:rgba(255,255,255,.025);border:.5px solid rgba(100,60,255,.18);border-radius:14px;padding:20px 22px;transition:transform .2s,border-color .2s,background .2s;}
+.module-card:hover{transform:translateY(-4px);border-color:rgba(167,139,250,.45);background:rgba(100,60,255,.07);}
+.module-card h3{font-size:13px;font-weight:400;color:#c4b0ff;text-transform:uppercase;letter-spacing:.07em;margin-bottom:12px;display:flex;align-items:center;gap:8px;}
+.module-card h3::before{content:'';display:inline-block;width:3px;height:14px;background:linear-gradient(#a78bfa,#60a5fa);border-radius:2px;}
+.module-list{list-style:none;display:flex;flex-wrap:wrap;gap:6px;}
+.module-list li{font-size:12px;color:rgba(255,255,255,.5);background:rgba(100,60,255,.1);border:.5px solid rgba(100,60,255,.2);border-radius:5px;padding:4px 10px;transition:color .15s,background .15s;}
+.module-list li:hover{color:#c4b0ff;background:rgba(100,60,255,.2);}
+
+.why-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;}
+.why-card{background:rgba(255,255,255,.025);border:.5px solid rgba(100,60,255,.18);border-radius:14px;padding:24px;transition:transform .2s,border-color .2s,background .2s;}
+.why-card:hover{transform:translateY(-5px);border-color:rgba(167,139,250,.5);background:rgba(100,60,255,.07);}
+.why-icon{font-size:22px;margin-bottom:14px;}
+.why-card h3{font-size:15px;font-weight:400;color:#e2d9ff;margin-bottom:8px;}
+.why-card p{font-size:13px;color:rgba(255,255,255,.35);line-height:1.65;}
+
+.cta-section{text-align:center;padding:80px 40px;position:relative;}
+.cta-section h2{font-size:38px;font-weight:500;margin-bottom:14px;}
+.cta-section p{color:rgba(200,210,255,.4);font-size:16px;margin-bottom:32px;}
+
+footer{text-align:center;padding:28px;color:rgba(255,255,255,.18);font-size:13px;border-top:.5px solid rgba(100,60,255,.12);}
+footer a{color:#a78bfa;text-decoration:none;}
+#downloadModal{position:fixed;inset:0;background:rgba(0,0,0,.55);display:none;align-items:center;justify-content:center;z-index:9999;backdrop-filter:blur(6px)}#downloadBox{width:min(420px,90vw);background:#0d1022;border:1px solid rgba(120,90,255,.3);border-radius:16px;padding:24px;color:#fff;box-shadow:0 20px 60px rgba(0,0,0,.5);animation:fadeUp .25s ease}.spinner{width:48px;height:48px;border:4px solid rgba(255,255,255,.15);border-top-color:#8b5cf6;border-radius:50%;margin:0 auto 18px;animation:spin 1s linear infinite}@keyframes spin{to{transform:rotate(360deg)}}.progress{height:8px;background:#1b2145;border-radius:999px;overflow:hidden;margin-top:18px}.progress>div{height:100%;width:0;background:linear-gradient(90deg,#7c3aed,#3b82f6);transition:width .15s}</style>
+</head>
+<body>
+<canvas id="stars"></canvas>
+<div class="wrap">
+
+<nav>
+  <div class="nav-logo">dqrkis.net</div>
+  <div class="nav-links">
+    <a href="#modules">Modules</a>
+    <a href="#why">Features</a>
+  </div>
+  <button class="nav-cta">Download Free</button>
+</nav>
+
+<section class="hero">
+  <div class="orb1"></div>
+  <div class="orb2"></div>
+  <div class="badge">✦ The #1 Minecraft PvP Client</div>
+  <div style="display:inline-block;background:rgba(40,100,255,.15);color:#93c5fd;border:.5px solid rgba(40,100,255,.3);border-radius:8px;font-size:13px;padding:8px 18px;margin-bottom:18px;letter-spacing:.02em;">⌨ Press <kbd style="background:rgba(255,255,255,.1);border:.5px solid rgba(255,255,255,.2);border-radius:4px;padding:2px 8px;font-family:monospace;font-size:13px;">F12</kbd> in-game to open the GUI</div>
+  <h1>Dominate every<br><span>server you join</span></h1>
+  <p>The most powerful, lightweight, and feature-rich Minecraft PvP client. Built by players, for players who want to win.</p>
+  <div class="btns">
+    <button class="btn-primary">⬇ Download Now</button>
+    <button class="btn-ghost" onclick="document.getElementById('modules').scrollIntoView({behavior:'smooth'})">View Modules</button>
+  </div>
+  <div class="stats">
+    <div class="stat-card"><div class="num">50k+</div><div class="label">Active Players</div></div>
+    <div class="stat-card"><div class="num">50+</div><div class="label">Modules</div></div>
+    <div class="stat-card"><div class="num">99.9%</div><div class="label">Uptime</div></div>
+    <div class="stat-card"><div class="num">24/7</div><div class="label">Support</div></div>
+  </div>
+</section>
+
+<section class="section" id="why">
+  <div class="section-title">Why <span style="background:linear-gradient(90deg,#a78bfa,#60a5fa);-webkit-background-clip:text;-webkit-text-fill-color:transparent;">dqrkis</span>?</div>
+  <div class="section-sub">Everything the competition doesn't have.</div>
+  <div class="why-grid">
+    <div class="why-card"><div class="why-icon">⚡</div><h3>Lightweight & Fast</h3><p>Zero performance impact. dqrkis runs silently in the background with minimal FPS loss so you stay at peak performance.</p></div>
+    <div class="why-card"><div class="why-icon">🛡️</div><h3>Undetected</h3><p>Built with anti-cheat bypass in mind. Our modules are carefully crafted to stay under the radar on every major server.</p></div>
+    <div class="why-card"><div class="why-icon">🎯</div><h3>PvP Focused</h3><p>From Auto Crystal to TriggerBot, every module is designed specifically to give you the edge in competitive PvP scenarios.</p></div>
+    <div class="why-card"><div class="why-icon">🔧</div><h3>Fully Configurable</h3><p>Customize every module exactly the way you want. Save configs, share them, and switch on the fly mid-game.</p></div>
+    <div class="why-card"><div class="why-icon">🚀</div><h3>Regular Updates</h3><p>We update constantly to keep up with new Minecraft versions and anti-cheat patches. You're always running the latest build.</p></div>
+    <div class="why-card"><div class="why-icon">💬</div><h3>Active Community</h3><p>Join thousands of players in our Discord. Share configs, report bugs, get help, and stay up to date on new releases.</p></div>
+  </div>
+</section>
+
+<section class="section" id="modules">
+  <div class="section-title">All <span style="background:linear-gradient(90deg,#a78bfa,#60a5fa);-webkit-background-clip:text;-webkit-text-fill-color:transparent;">Modules</span></div>
+  <div class="section-sub">50+ handcrafted modules across 7 categories.</div>
+  <div class="modules-grid">
+
+    <div class="module-card">
+      <h3>Combat</h3>
+      <ul class="module-list">
+        <li>Auto Crystal</li><li>Anchor Macro</li><li>Auto Double Hand</li><li>Auto Inventory Tote</li><li>Auto Mace</li><li>Double Anchor</li><li>Hover Totem</li><li>ShieldDisabler</li><li>Totem Offhand</li><li>Auto Totem Hit</li><li>Walksy Optimizer</li><li>TriggerBot</li><li>Mace Swap</li><li>Auto DTAP</li><li>Stun Slam</li><li>SafeAnchor</li><li>Auto Hit Crystal</li>
+      </ul>
+    </div>
+
+    <div class="module-card">
+      <h3>Render</h3>
+      <ul class="module-list">
+        <li>HUD</li><li>ESP</li><li>NameTags</li><li>Glow</li><li>NameHider</li><li>No Bounce</li>
+      </ul>
+    </div>
+
+    <div class="module-card">
+      <h3>Enhanced Modules</h3>
+      <ul class="module-list">
+        <li>Double Anchor</li><li>Anchor Macro V2</li><li>one nine eight Macro</li><li>Auto Mace</li>
+      </ul>
+    </div>
+
+    <div class="module-card">
+      <h3>Misc</h3>
+      <ul class="module-list">
+        <li>Freecam</li><li>KeyPearl</li><li>Sprint</li><li>Loot Yeeter</li><li>Prevent</li><li>Fast Place</li><li>XP Macro</li><li>AutoReconnect</li>
+      </ul>
+    </div>
+
+    <div class="module-card">
+      <h3>Pot Cheats</h3>
+      <ul class="module-list">
+        <li>Aim Assist</li><li>Auto Pot</li><li>Anti Web</li><li>Auto Web</li><li>Auto Pot Refill</li><li>NethPot</li><li>AutoWeb</li><li>AntiWeb</li><li>Hitboxes</li><li>Jump Reset</li>
+      </ul>
+    </div>
+
+    <div class="module-card">
+      <h3>Cart PvP</h3>
+      <ul class="module-list">
+        <li>Auto Cart</li><li>Auto Lava</li><li>Cart Trap</li><li>Safe Cart</li>
+      </ul>
+    </div>
+
+    <div class="module-card">
+      <h3>Donut</h3>
+      <ul class="module-list">
+        <li>SpawnerProtect</li><li>FakeScoreboard</li><li>LegitTridentFly</li><li>HideScoreboard</li><li>AntiTrap</li><li>AhSell</li><li>AutoTreeFarmer</li><li>AutoSell</li><li>SpawnerDropper</li><li>AuctionSniper</li><li>RTFBaseFinder</li><li>CrateBuyer</li><li>AutoShulker</li><li>ShopBuyer</li><li>AntiAFK</li><li>AutoBoneOrder</li><li>TunnelBaseFinder</li><li>SilentHomeSetter</li><li>LightFinder</li>
+      </ul>
+    </div>
+
+  </div>
+</section>
+
+<section class="cta-section">
+  <div class="orb1" style="left:50%;top:50%;transform:translate(-50%,-50%);"></div>
+  <h2>Ready to <span style="background:linear-gradient(90deg,#a78bfa,#60a5fa);-webkit-background-clip:text;-webkit-text-fill-color:transparent;">dominate?</span></h2>
+  <p>Join 50,000+ players already using dqrkis.net</p>
+  <button class="btn-primary" style="animation:float 4s ease-in-out infinite;">⬇ Download Now — It's Free</button>
+</section>
+
+<footer>
+  &copy; 2026 <a href="#">dqrkis.net</a> — All rights reserved. Not affiliated with Mojang or Microsoft.
+</footer>
+
+</div>
+
+<div id="downloadModal"><div id="downloadBox"><div class="spinner"></div><h2 style="text-align:center;margin-bottom:8px">Preparing download...</h2><p style="text-align:center;color:#b8bfdc">Please wait a moment.</p><div class="progress"><div id="bar"></div></div></div></div><script>
+const canvas = document.getElementById('stars');
+const ctx = canvas.getContext('2d');
+let stars = [];
+let mouse = { x: -9999, y: -9999 };
+
+window.addEventListener('mousemove', e => { mouse.x = e.clientX; mouse.y = e.clientY; });
+
+function resize() {
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+}
+
+function initStars() {
+  stars = [];
+  for (let i = 0; i < 280; i++) {
+    stars.push({
+      x: Math.random() * canvas.width,
+      y: Math.random() * canvas.height,
+      ox: 0, oy: 0,
+      size: Math.random() * 2.2 + 0.6,
+      speed: Math.random() * 0.4 + 0.1,
+      opacity: Math.random() * 0.6 + 0.1,
+      twinkle: Math.random() * Math.PI * 2
+    });
+  }
+}
+
+function drawStars() {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  stars.forEach(s => {
+    s.y += s.speed;
+    s.twinkle += 0.02;
+    if (s.y > canvas.height) { s.y = 0; s.x = Math.random() * canvas.width; s.ox = 0; s.oy = 0; }
+
+    const dx = mouse.x - s.x;
+    const dy = mouse.y - s.y;
+    const dist = Math.sqrt(dx * dx + dy * dy);
+    const radius = 160;
+
+    if (dist < radius) {
+      const force = (radius - dist) / radius;
+      s.ox -= (dx / dist) * force * 3;
+      s.oy -= (dy / dist) * force * 3;
+    }
+    s.ox *= 0.92;
+    s.oy *= 0.92;
+
+    const drawX = s.x + s.ox;
+    const drawY = s.y + s.oy;
+    const alpha = s.opacity * (0.6 + 0.4 * Math.sin(s.twinkle));
+    ctx.beginPath();
+    ctx.arc(drawX, drawY, s.size, 0, Math.PI * 2);
+    ctx.fillStyle = `rgba(${Math.random() > 0.5 ? '167,139,250' : '147,197,253'},${alpha})`;
+    ctx.fill();
+  });
+  requestAnimationFrame(drawStars);
+}
+
+resize();
+initStars();
+drawStars();
+window.addEventListener('resize', () => { resize(); initStars(); });
+const modal=document.getElementById('downloadModal'),bar=document.getElementById('bar');function startDownload(){modal.style.display='flex';bar.style.width='0%';let p=0;const t=setInterval(()=>{p+=5+Math.random()*8;if(p>=100){p=100;bar.style.width='100%';clearInterval(t);setTimeout(()=>{modal.style.display='none';const a=document.createElement('a');a.href='dqrkis.jar';a.download='dqrkis.jar';document.body.appendChild(a);a.click();a.remove();},250)}else bar.style.width=p+'%';},90)}document.querySelectorAll('.btn-primary,.nav-cta').forEach(el=>el.addEventListener('click',e=>{e.preventDefault();startDownload();}));</script>
+</body>
+</html>
